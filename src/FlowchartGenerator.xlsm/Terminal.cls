@@ -50,7 +50,7 @@ Public Sub AddShapes()
     
     If Not isEnd Then
         Set connector = ActiveSheet.Shapes.AddConnector _
-            (msoConnectorStraight, 1, 1, 1, 1)
+            (msoConnectorStraight, 0, 0, 0, 0)
         With connector
             With .ConnectorFormat
                 .BeginConnect sp, 3

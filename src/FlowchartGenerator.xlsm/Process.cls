@@ -39,7 +39,7 @@ Public Sub AddShapes()
     prevConnector.ConnectorFormat.EndConnect sp, 1
     
     Set connector = ActiveSheet.Shapes.AddConnector _
-        (msoConnectorStraight, 1, 1, 1, 1)
+        (msoConnectorStraight, 0, 0, 0, 0)
     With connector
         With .ConnectorFormat
             .BeginConnect sp, 3

@@ -31,18 +31,14 @@ Sub Run()
     
     Set c = New Decision
     c.innerText = "CCC"
-    c.left = a.left
-    c.top = a.bottom
     Set c.mainSymbols = list
-    Set c.branchSymbols = Nothing
     symbols.Add c
     
     Set b = New Terminal
     b.innerText = "BBB"
-    b.left = c.left
-    b.top = c.bottom
     b.isEnd = True
     symbols.Add b
+    
     
     Dim connector As Shape
     Set connector = Nothing

@@ -47,7 +47,7 @@ Public Sub AddShapes()
     bottom = top + height + 10
     
     Set connector = ActiveSheet.Shapes.AddConnector _
-        (msoConnectorStraight, 1, 1, 1, 1)
+        (msoConnectorStraight, 0, 0, 0, 0)
     With connector
         .ConnectorFormat.BeginConnect sp, 3
         .Line.ForeColor.RGB = RGB(0, 0, 0)
@@ -64,7 +64,7 @@ Public Sub AddShapes()
         With ActiveSheet.Shapes.AddConnector _
             (msoConnectorElbow, 0, 0, 0, 0)
             With .Line
-                .EndArrowheadStyle = msoArrowheadTriangle
+                .EndArrowheadStyle = msoArrowheadOpen
                 .ForeColor.RGB = RGB(0, 0, 0)
             End With
             With .ConnectorFormat
