@@ -10,12 +10,14 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Class Terminal
+Implements Symbol
 
 Public isStart As Boolean
 Public isEnd As Boolean
 Public innerText As String
 Public left As Single
 Public top As Single
+Public bottom As Single
 Public connector As Shape
 Public prevConnector As Shape
 
@@ -25,9 +27,12 @@ Private Sub Class_intiialize()
 End Sub
 
 Public Sub AddShapes()
-    Dim sp As Shape
+    Dim sp As Shape, height As Single
+    
+    height = 40
+    
     Set sp = ActiveSheet.Shapes.AddShape _
-        (msoShapeFlowchartTerminator, left, top, 100, 40)
+        (msoShapeFlowchartTerminator, left, top, 100, height)
     With sp
         With .TextFrame
             .Characters.text = innerText
@@ -54,6 +59,11 @@ Public Sub AddShapes()
         End With
     End If
     
+    bottom = top + height + 10
+End Sub
+
+Private Sub Symbol_AddShapes()
+    Me.AddShapes
 End Sub
 
 

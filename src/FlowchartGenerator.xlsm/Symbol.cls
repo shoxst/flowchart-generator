@@ -9,6 +9,9 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+' Class Symbol
+
+' abstract method
 Public Sub AddShapes()
 End Sub
 
