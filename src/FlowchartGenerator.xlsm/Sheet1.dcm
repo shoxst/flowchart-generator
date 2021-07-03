@@ -1,0 +1,43 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "Sheet1"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = True
+Private leftOffset As Integer
+Private topOffset As Integer
+
+Sub Run()
+    leftOffset = 50
+    topOffset = 100
+       
+    Set a = New Terminal
+    a.innerText = "AAA"
+    a.left = leftOffset
+    a.top = topOffset
+    a.isStart = True
+    a.AddShapes
+    
+    topOffset = topOffset + 50
+    Set c = New Process
+    c.innerText = "CCC"
+    c.left = leftOffset
+    c.top = topOffset
+    Set c.prevConnector = a.connector
+    c.AddShapes
+    
+    topOffset = topOffset + 50
+    Set b = New Terminal
+    b.innerText = "BBB"
+    b.left = leftOffset
+    b.top = topOffset
+    b.isEnd = True
+    Set b.prevConnector = c.connector
+    b.AddShapes
+        
+End Sub
+
+
