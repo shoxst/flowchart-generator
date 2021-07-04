@@ -7,52 +7,78 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
-Sub Run()
-    Dim left, top, bottom As Single
-    left = 50
-    bottom = 100
+'Sub Run()
+'    Dim Left, Top, Bottom As Single
+'    Left = 50
+'    Bottom = 100
+'
+'    Dim symbols As New Collection
+'
+'    Set a = New Terminal
+'    a.InnerText = "AAA"
+'    a.IsStart = True
+'    symbols.Add a
+'
+'    Dim list As New Collection
+'
+'    Set d = New Process
+'    d.InnerText = "DDD"
+'    list.Add d
+'
+'    Set e = New Terminal
+'    e.InnerText = "EEE"
+'    list.Add e
+'
+'    Set c = New Decision
+'    c.InnerText = "CCC"
+'    Set c.mainSymbols = list
+'    symbols.Add c
+'
+'    Set b = New Terminal
+'    b.InnerText = "BBB"
+'    b.IsEnd = True
+'    symbols.Add b
+'
+'
+'    Dim Connector As Shape
+'    Set Connector = Nothing
+'
+'    Dim i As Integer
+'    For i = 1 To symbols.Count
+'        Set symbols(i).prevConnector = Connector
+'        symbols(i).Left = Left
+'        symbols(i).Top = Bottom
+'        symbols(i).AddShapes
+'        Set Connector = symbols(i).Connector
+'        Bottom = symbols(i).Bottom
+'    Next
+'
+'End Sub
+
+Sub Test()
+    Dim blocks As New Collection
     
-    Dim symbols As New Collection
-       
-    Set a = New Terminal
-    a.innerText = "AAA"
-    a.isStart = True
-    symbols.Add a
+    Set a = New TerminalBlock
+    a.InnerText = "AAA"
+    a.IsStart = True
+    Set a.PrevBlock = New BlockBase
+    a.PrevBlock.Area.Left = 50
+    a.PrevBlock.Area.Bottom = 100
+    blocks.Add a
     
-    Dim list As New Collection
-    
-    Set d = New Process
-    d.innerText = "DDD"
-    list.Add d
-    
-    Set e = New Terminal
-    e.innerText = "EEE"
-    list.Add e
-    
-    Set c = New Decision
-    c.innerText = "CCC"
-    Set c.mainSymbols = list
-    symbols.Add c
-    
-    Set b = New Terminal
-    b.innerText = "BBB"
-    b.isEnd = True
-    symbols.Add b
-    
-    
-    Dim connector As Shape
-    Set connector = Nothing
-    
-    Dim i As Integer
-    For i = 1 To symbols.Count
-        Set symbols(i).prevConnector = connector
-        symbols(i).left = left
-        symbols(i).top = bottom
-        symbols(i).AddShapes
-        Set connector = symbols(i).connector
-        bottom = symbols(i).bottom
+    Set b = New ProcessBlock
+    b.InnerText = "BBB"
+    Set b.PrevBlock = a
+    blocks.Add b
+
+    Set c = New TerminalBlock
+    c.InnerText = "CCC"
+    c.IsEnd = True
+    Set c.PrevBlock = b
+    blocks.Add c
+
+    Dim elm As BlockBase
+    For Each elm In blocks
+        elm.WriteBlock
     Next
-        
 End Sub
-
-

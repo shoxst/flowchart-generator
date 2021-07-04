@@ -12,11 +12,11 @@ Option Explicit
 ' Class Process
 Implements Symbol
 
-Public innerText As String
-Public left As Single
-Public top As Single
-Public bottom As Single
-Public connector As Shape
+Public InnerText As String
+Public Left As Single
+Public Top As Single
+Public Bottom As Single
+Public Connector As Shape
 Public prevConnector As Shape
 
 Public Sub AddShapes()
@@ -24,10 +24,10 @@ Public Sub AddShapes()
     height = 40
     
     Set sp = ActiveSheet.Shapes.AddShape _
-        (msoShapeFlowchartProcess, left, top, 100, height)
+        (msoShapeFlowchartProcess, Left, Top, 100, height)
     With sp
         With .TextFrame
-            .Characters.text = innerText
+            .Characters.text = InnerText
             .Characters.Font.Color = RGB(0, 0, 0)
             .HorizontalAlignment = xlHAlignCenter
             .VerticalAlignment = xlVAlignCenter
@@ -38,16 +38,16 @@ Public Sub AddShapes()
     
     prevConnector.ConnectorFormat.EndConnect sp, 1
     
-    Set connector = ActiveSheet.Shapes.AddConnector _
+    Set Connector = ActiveSheet.Shapes.AddConnector _
         (msoConnectorStraight, 0, 0, 0, 0)
-    With connector
+    With Connector
         With .ConnectorFormat
             .BeginConnect sp, 3
         End With
         .Line.ForeColor.RGB = RGB(0, 0, 0)
     End With
     
-    bottom = top + height + 10
+    Bottom = Top + height + 10
 End Sub
 
 Private Sub Symbol_AddShapes()

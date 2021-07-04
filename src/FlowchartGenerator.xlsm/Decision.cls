@@ -12,11 +12,11 @@ Option Explicit
 ' Class Decision
 Implements Symbol
 
-Public innerText As String
-Public left As Single
-Public top As Single
-Public bottom As Single
-Public connector As Shape
+Public InnerText As String
+Public Left As Single
+Public Top As Single
+Public Bottom As Single
+Public Connector As Shape
 Public prevConnector As Shape
 
 Public mainSymbols As New Collection
@@ -30,10 +30,10 @@ Public Sub AddShapes()
     
     ' Decision Symbol
     Set sp = ActiveSheet.Shapes.AddShape _
-        (msoShapeFlowchartDecision, left, top, 100, height)
+        (msoShapeFlowchartDecision, Left, Top, 100, height)
     With sp
         With .TextFrame
-            .Characters.text = innerText
+            .Characters.text = InnerText
             .Characters.Font.Color = RGB(0, 0, 0)
             .HorizontalAlignment = xlHAlignCenter
             .VerticalAlignment = xlVAlignCenter
@@ -44,11 +44,11 @@ Public Sub AddShapes()
     
     prevConnector.ConnectorFormat.EndConnect sp, 1
     
-    bottom = top + height + 10
+    Bottom = Top + height + 10
     
-    Set connector = ActiveSheet.Shapes.AddConnector _
+    Set Connector = ActiveSheet.Shapes.AddConnector _
         (msoConnectorStraight, 0, 0, 0, 0)
-    With connector
+    With Connector
         .ConnectorFormat.BeginConnect sp, 3
         .Line.ForeColor.RGB = RGB(0, 0, 0)
     End With
@@ -81,23 +81,23 @@ Private Sub AddMainSymbols()
     If mainSymbols.Count <> 0 Then
         Dim i As Integer
         For i = 1 To mainSymbols.Count
-            Set mainSymbols(i).prevConnector = connector
-            mainSymbols(i).left = left
-            mainSymbols(i).top = bottom
+            Set mainSymbols(i).prevConnector = Connector
+            mainSymbols(i).Left = Left
+            mainSymbols(i).Top = Bottom
             mainSymbols(i).AddShapes
-            Set connector = mainSymbols(i).connector
-            bottom = mainSymbols(i).bottom
+            Set Connector = mainSymbols(i).Connector
+            Bottom = mainSymbols(i).Bottom
         Next
     End If
 End Sub
 
 Private Sub AddDummy()
     Set dummy = ActiveSheet.Shapes.AddShape _
-        (msoShapeRectangle, left + 50, bottom, 0, 10)
+        (msoShapeRectangle, Left + 50, Bottom, 0, 10)
     With dummy
         .Visible = msoFalse
     End With
-    bottom = bottom + 20
+    Bottom = Bottom + 20
 End Sub
 
 Private Sub Symbol_AddShapes()

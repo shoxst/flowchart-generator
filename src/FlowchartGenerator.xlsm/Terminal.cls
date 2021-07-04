@@ -12,18 +12,18 @@ Option Explicit
 ' Class Terminal
 Implements Symbol
 
-Public isStart As Boolean
-Public isEnd As Boolean
-Public innerText As String
-Public left As Single
-Public top As Single
-Public bottom As Single
-Public connector As Shape
+Public IsStart As Boolean
+Public IsEnd As Boolean
+Public InnerText As String
+Public Left As Single
+Public Top As Single
+Public Bottom As Single
+Public Connector As Shape
 Public prevConnector As Shape
 
-Private Sub Class_intiialize()
-    isStart = False
-    isEnd = False
+Private Sub Class_Intiialize()
+    IsStart = False
+    IsEnd = False
 End Sub
 
 Public Sub AddShapes()
@@ -32,10 +32,10 @@ Public Sub AddShapes()
     height = 40
     
     Set sp = ActiveSheet.Shapes.AddShape _
-        (msoShapeFlowchartTerminator, left, top, 100, height)
+        (msoShapeFlowchartTerminator, Left, Top, 100, height)
     With sp
         With .TextFrame
-            .Characters.text = innerText
+            .Characters.text = InnerText
             .Characters.Font.Color = RGB(0, 0, 0)
             .HorizontalAlignment = xlHAlignCenter
             .VerticalAlignment = xlVAlignCenter
@@ -44,14 +44,14 @@ Public Sub AddShapes()
         .Fill.ForeColor.RGB = RGB(255, 255, 255)
     End With
     
-    If Not isStart Then
+    If Not IsStart Then
         prevConnector.ConnectorFormat.EndConnect sp, 1
     End If
     
-    If Not isEnd Then
-        Set connector = ActiveSheet.Shapes.AddConnector _
+    If Not IsEnd Then
+        Set Connector = ActiveSheet.Shapes.AddConnector _
             (msoConnectorStraight, 0, 0, 0, 0)
-        With connector
+        With Connector
             With .ConnectorFormat
                 .BeginConnect sp, 3
             End With
@@ -59,7 +59,7 @@ Public Sub AddShapes()
         End With
     End If
     
-    bottom = top + height + 10
+    Bottom = Top + height + 10
 End Sub
 
 Private Sub Symbol_AddShapes()
