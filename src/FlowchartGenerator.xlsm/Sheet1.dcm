@@ -7,78 +7,73 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
-'Sub Run()
-'    Dim Left, Top, Bottom As Single
-'    Left = 50
-'    Bottom = 100
-'
-'    Dim symbols As New Collection
-'
-'    Set a = New Terminal
-'    a.InnerText = "AAA"
-'    a.IsStart = True
-'    symbols.Add a
-'
-'    Dim list As New Collection
-'
-'    Set d = New Process
-'    d.InnerText = "DDD"
-'    list.Add d
-'
-'    Set e = New Terminal
-'    e.InnerText = "EEE"
-'    list.Add e
-'
-'    Set c = New Decision
-'    c.InnerText = "CCC"
-'    Set c.mainSymbols = list
-'    symbols.Add c
-'
-'    Set b = New Terminal
-'    b.InnerText = "BBB"
-'    b.IsEnd = True
-'    symbols.Add b
-'
-'
-'    Dim Connector As Shape
-'    Set Connector = Nothing
-'
-'    Dim i As Integer
-'    For i = 1 To symbols.Count
-'        Set symbols(i).prevConnector = Connector
-'        symbols(i).Left = Left
-'        symbols(i).Top = Bottom
-'        symbols(i).AddShapes
-'        Set Connector = symbols(i).Connector
-'        Bottom = symbols(i).Bottom
-'    Next
-'
-'End Sub
-
-Sub Test()
+Sub Run()
     Dim blocks As New Collection
     
     Set a = New TerminalBlock
     a.InnerText = "AAA"
     a.IsStart = True
     Set a.PrevBlock = New BlockBase
-    a.PrevBlock.Area.Left = 50
-    a.PrevBlock.Area.Bottom = 100
+    a.PrevBlock.Area.Left = 100
+    a.PrevBlock.Area.Bottom = 50
     blocks.Add a
     
     Set b = New ProcessBlock
     b.InnerText = "BBB"
     Set b.PrevBlock = a
     blocks.Add b
+    
+    Dim main As New Collection
+    Dim branch As New Collection
+    Dim br As New Collection
+
+    Set f = New DecisionBlock
+    f.InnerText = "FFF"
+    f.MainLabel = "Yes"
+    f.BranchLabel = "No"
+    Set f.PrevBlock = b
+    
+    Set g = New ProcessBlock
+    g.InnerText = "GGG"
+    branch.Add g
+    
+    Set h = New DecisionBlock
+    h.InnerText = "HHH"
+    h.MainLabel = "Yes"
+    h.BranchLabel = "No"
+    Set h.PrevBlock = g
+    
+    Set i = New ProcessBlock
+    i.InnerText = "III"
+    br.Add i
+    
+    Set h.BranchBlocks = br
+    branch.Add h
+    
+    Set d = New ProcessBlock
+    d.InnerText = "DDD"
+    Set d.PrevBlock = f
+    main.Add d
+
+    Set e = New ProcessBlock
+    e.InnerText = "EEE"
+    Set e.PrevBlock = d
+    main.Add e
+    
+    
+    Set f.MainBlocks = main
+    Set f.BranchBlocks = branch
+    
+    blocks.Add f
 
     Set c = New TerminalBlock
     c.InnerText = "CCC"
     c.IsEnd = True
-    Set c.PrevBlock = b
+    Set c.PrevBlock = f
     blocks.Add c
 
-    Dim elm As BlockBase
-    For Each elm In blocks
-        elm.WriteBlock
+    Dim ed As BlockBase
+    For Each ed In blocks
+        ed.WriteBlock
     Next
 End Sub

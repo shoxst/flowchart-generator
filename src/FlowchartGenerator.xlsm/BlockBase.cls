@@ -18,21 +18,3 @@ Public PrevBlock As BlockBase
 ' Abstract Method
 Public Sub WriteBlock()
 End Sub
-
-' Virtual Method
-Public Sub SetDefaultShapeStyle(ByRef Shape As Shape)
-    With Shape
-        With .TextFrame
-            .Characters.text = InnerText
-            .Characters.Font.Color = RGB(0, 0, 0)
-            .HorizontalAlignment = xlHAlignCenter
-            .VerticalAlignment = xlVAlignCenter
-        End With
-        .Line.ForeColor.RGB = RGB(0, 0, 0)
-        .Fill.ForeColor.RGB = RGB(255, 255, 255)
-    End With
-End Sub
-
-Public Sub SetDefaultConnectorColor(ByRef Connector As Shape)
-    Connector.Line.ForeColor.RGB = RGB(0, 0, 0)
-End Sub

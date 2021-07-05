@@ -9,54 +9,42 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-' class Process Block
+' class ProcessBlock
 Implements BlockBase
 
 Private Super As New BlockBase
 
 ' Override Method
 Private Sub BlockBase_WriteBlock()
-    Dim sp As Shape, con As Shape
-    Dim height As Single, width As Single
+    Dim shp As Shape, con As Shape
     
-    width = 100
-    height = 40
+    ' Set block start point
+    Super.Area.SetStartPoint PrevBlock.Area
 
-    ' Set block area start
-    Super.Area.Left = Super.PrevBlock.Area.Left
-    Super.Area.Top = Super.PrevBlock.Area.Bottom
-
-    ' Create process symbols
-    Set sp = ActiveSheet.Shapes.AddShape _
-        (msoShapeFlowchartProcess, Super.Area.Left, Super.Area.Top, width, height)
-    Call BlockBase_SetDefaultShapeStyle(sp)
+    ' Create process symbol
+    Set shp = ActiveSheet.Shapes.AddShape _
+        (msoShapeFlowchartProcess, Super.Area.Left, Super.Area.Top, Super.Area.SymbolWidth, Super.Area.SymbolHeight)
+    DefaultStyle.SetSymbolStyle shp
+    shp.TextFrame.Characters.text = Super.InnerText
 
     ' Connect with previous block
-    Super.PrevBlock.Connector.ConnectorFormat.EndConnect sp, 1
+    Super.PrevBlock.Connector.ConnectorFormat.EndConnect shp, ConnectionSite.Top
 
     ' Create next connector
     Set con = ActiveSheet.Shapes.AddConnector _
         (msoConnectorStraight, 0, 0, 0, 0)
-    Call BlockBase_SetDefaultConnectorColor(con)
-    con.ConnectorFormat.BeginConnect sp, 3
+    DefaultStyle.SetLineConnectorStyle con
+    con.ConnectorFormat.BeginConnect shp, ConnectionSite.Bottom
     Set Super.Connector = con
 
-    ' Set block area end
-    Super.Area.Bottom = Super.Area.Top + height + 10
+    ' Set block end point
+    Super.Area.SetEndPoint
     
-End Sub
-
-Private Sub BlockBase_SetDefaultShapeStyle(ByRef Shape As Shape)
-    Call Super.SetDefaultShapeStyle(Shape)
-End Sub
-
-Private Sub BlockBase_SetDefaultConnectorColor(ByRef Connector As Shape)
-    Call Super.SetDefaultConnectorColor(Connector)
 End Sub
 
 ' Interface
 Public Sub WriteBlock()
-    Call BlockBase_WriteBlock
+    BlockBase_WriteBlock
 End Sub
 
 ' Public Getter/Setter/Letter
