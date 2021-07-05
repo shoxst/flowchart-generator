@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Sub Run()
-    Dim blocks As New Collection
+    Dim Blocks As New BlockList
     
     Set a = New TerminalBlock
     a.InnerText = "AAA"
@@ -16,16 +16,16 @@ Sub Run()
     Set a.PrevBlock = New BlockBase
     a.PrevBlock.Area.Left = 100
     a.PrevBlock.Area.Bottom = 50
-    blocks.Add a
+    Blocks.Add a
     
     Set b = New ProcessBlock
     b.InnerText = "BBB"
     Set b.PrevBlock = a
-    blocks.Add b
+    Blocks.Add b
     
-    Dim main As New Collection
-    Dim branch As New Collection
-    Dim br As New Collection
+    Dim main As New BlockList
+    Dim branch As New BlockList
+    Dim br As New BlockList
 
     Set f = New DecisionBlock
     f.InnerText = "FFF"
@@ -64,16 +64,16 @@ Sub Run()
     Set f.MainBlocks = main
     Set f.BranchBlocks = branch
     
-    blocks.Add f
+    Blocks.Add f
 
     Set c = New TerminalBlock
     c.InnerText = "CCC"
     c.IsEnd = True
     Set c.PrevBlock = f
-    blocks.Add c
+    Blocks.Add c
 
     Dim ed As BlockBase
-    For Each ed In blocks
+    For Each ed In Blocks.Items
         ed.WriteBlock
     Next
 End Sub

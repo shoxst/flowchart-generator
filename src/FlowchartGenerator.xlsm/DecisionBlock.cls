@@ -12,8 +12,8 @@ Option Explicit
 ' class DecisionBlock
 Implements BlockBase
 
-Public MainBlocks As New Collection
-Public BranchBlocks As New Collection
+Public MainBlocks As New BlockList
+Public BranchBlocks As New BlockList
 Public MainLabel As String
 Public BranchLabel As String
 
@@ -54,7 +54,9 @@ Private Sub BlockBase_WriteBlock()
     WriteLabels
     
     ' Write main and branch blocks
-    WriteMainBlocks
+    If MainBlocks.Count <> 0 Then
+        WriteMainBlocks
+    End If
     If BranchBlocks.Count = 0 Then
         WriteElbowConnector
     Else
@@ -73,7 +75,7 @@ Private Sub BlockBase_WriteBlock()
     Else
         MaxRight = 0
         Dim e As BlockBase
-        For Each e In BranchBlocks
+        For Each e In BranchBlocks.Items
             If e.Area.Right > MaxRight Then
                 MaxRight = e.Area.Right
             End If
@@ -106,25 +108,23 @@ Private Sub WriteLabels()
 End Sub
 
 Private Sub WriteMainBlocks()
-    If MainBlocks.Count <> 0 Then
-        Dim e As BlockBase
-        For Each e In MainBlocks
-            e.WriteBlock
-        Next
-        Set Super.Connector = MainBlocks(MainBlocks.Count).Connector
-    End If
+    Dim e As BlockBase
+    For Each e In MainBlocks.Items
+        e.WriteBlock
+    Next
+    Set Super.Connector = MainBlocks.Last.Connector
 End Sub
 
 Private Sub WriteEndDummy()
     Dim mainBottom As Single, branchBottom As Single, endDummyTop As Single
     
     If MainBlocks.Count > 0 Then
-        mainBottom = MainBlocks(MainBlocks.Count).Area.Bottom
+        mainBottom = MainBlocks.Last.Area.Bottom
     Else
         mainBottom = 0
     End If
     If BranchBlocks.Count > 0 Then
-        branchBottom = BranchBlocks(BranchBlocks.Count).Area.Bottom
+        branchBottom = BranchBlocks.Last.Area.Bottom
     Else
         branchBottom = 0
     End If
@@ -158,15 +158,15 @@ Private Sub WriteBranchBlocks()
     
     StartDummy.Area.Left = Super.Area.Right + Constant.BLOCK_HORIZONTAL_MARGIN
     StartDummy.Area.Bottom = Super.Area.Bottom
-    Set BranchBlocks(1).PrevBlock = StartDummy
+    Set BranchBlocks.First.PrevBlock = StartDummy
     
     Dim e As BlockBase
-    For Each e In BranchBlocks
+    For Each e In BranchBlocks.Items
         e.WriteBlock
     Next
     
     Dim LastConnector As Shape
-    Set LastConnector = BranchBlocks(BranchBlocks.Count).Connector
+    Set LastConnector = BranchBlocks.Last.Connector
        
     Set con = ActiveSheet.Shapes.AddConnector _
             (msoConnectorElbow, 0, 0, 0, 0)
