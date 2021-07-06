@@ -18,7 +18,7 @@ Public MainLabel As String
 Public BranchLabel As String
 
 Private Super As New BlockBase
-Private DecisionShape As Shape
+Private DecisionSymbol As Shape
 Private EndDummy As Shape
 Private ArrowConnector As Shape
 
@@ -26,26 +26,27 @@ Private ArrowConnector As Shape
 Private Sub BlockBase_WriteBlock()
     Dim shp As Shape, con As Shape
     
-    Super.Area.SymbolHeight = Super.Area.SymbolHeight + 10
+    Super.Area.SymbolWidth = Constant.SYMBOL_DEFAULT_WIDTH + 30
+    Super.Area.SymbolHeight = Constant.SYMBOL_DEFAULT_HEIGHT + 10
     
     ' Set block start point
     Super.Area.SetStartPoint PrevBlock.Area
 
     ' Create decision shape
     Set shp = ActiveSheet.Shapes.AddShape _
-        (msoShapeFlowchartDecision, Super.Area.Left, Super.Area.Top, Super.Area.SymbolWidth, Super.Area.SymbolHeight)
+        (symbolTypeDecision, Super.Area.Left, Super.Area.Top, Super.Area.SymbolWidth, Super.Area.SymbolHeight)
     DefaultStyle.SetSymbolStyle shp
     shp.TextFrame.Characters.text = Super.InnerText
-    Set DecisionShape = shp
+    Set DecisionSymbol = shp
 
     ' Connect with previous block
-    Super.PrevBlock.Connector.ConnectorFormat.EndConnect shp, ConnectionSite.Top
+    Super.PrevBlock.Connector.ConnectorFormat.EndConnect shp, 1
 
     ' Create next connector
     Set con = ActiveSheet.Shapes.AddConnector _
         (msoConnectorStraight, 0, 0, 0, 0)
     DefaultStyle.SetLineConnectorStyle con
-    con.ConnectorFormat.BeginConnect shp, ConnectionSite.Bottom
+    con.ConnectorFormat.BeginConnect shp, 3
     Set Super.Connector = con
 
     ' Set block end point
@@ -54,8 +55,12 @@ Private Sub BlockBase_WriteBlock()
     WriteLabels
     
     ' Write main and branch blocks
+    Dim MainMaxRight As Single
+    
     If MainBlocks.Count <> 0 Then
         WriteMainBlocks
+        MainMaxRight = BlockUtil.MaxRightInBlocks(MainBlocks)
+        Super.Area.Right = MainMaxRight
     End If
     If BranchBlocks.Count = 0 Then
         WriteElbowConnector
@@ -63,25 +68,20 @@ Private Sub BlockBase_WriteBlock()
         WriteBranchBlocks
     End If
     WriteEndDummy
-    ArrowConnector.ConnectorFormat.EndConnect EndDummy, ConnectionSite.Right
+    ArrowConnector.ConnectorFormat.EndConnect EndDummy, 4
+    
     If BranchBlocks.Count = 0 Then
-        ArrowConnector.Adjustments(1) = -1
+        Dim SymbolRight As Single, MaxRight As Single
+        SymbolRight = Super.Area.HorizontalCenter + Super.Area.SymbolWidth / 2
+        MaxRight = IIf(MainMaxRight > SymbolRight, MainMaxRight, SymbolRight)
+        ArrowConnector.Adjustments(1) = _
+            1 - (MaxRight - Super.Area.HorizontalCenter + Constant.BLOCK_HORIZONTAL_MARGIN) * 2 / Super.Area.SymbolWidth
     End If
     
     ' Set block end point
-    Dim MaxRight As Single
-    If BranchBlocks.Count = 0 Then
-        MaxRight = Super.Area.Right + BLOCK_HORIZONTAL_MARGIN
-    Else
-        MaxRight = 0
-        Dim e As BlockBase
-        For Each e In BranchBlocks.Items
-            If e.Area.Right > MaxRight Then
-                MaxRight = e.Area.Right
-            End If
-        Next
+    If BranchBlocks.Count <> 0 Then
+        Super.Area.Right = BlockUtil.MaxRightInBlocks(BranchBlocks)
     End If
-    Super.Area.Right = MaxRight
     
 End Sub
 
@@ -141,7 +141,7 @@ Private Sub WriteElbowConnector()
     Set con = ActiveSheet.Shapes.AddConnector _
             (msoConnectorElbow, 0, 0, 0, 0)
     DefaultStyle.SetArrowConnectorStyle con
-    con.ConnectorFormat.BeginConnect DecisionShape, ConnectionSite.Right
+    con.ConnectorFormat.BeginConnect DecisionSymbol, 4
     Set ArrowConnector = con
 End Sub
 
@@ -151,9 +151,7 @@ Private Sub WriteBranchBlocks()
     Set con = ActiveSheet.Shapes.AddConnector _
             (msoConnectorElbow, 0, 0, 0, 0)
     DefaultStyle.SetLineConnectorStyle con
-    With con
-        .ConnectorFormat.BeginConnect DecisionShape, ConnectionSite.Right
-    End With
+    con.ConnectorFormat.BeginConnect DecisionSymbol, 4
     Set StartDummy.Connector = con
     
     StartDummy.Area.Left = Super.Area.Right + Constant.BLOCK_HORIZONTAL_MARGIN
@@ -171,10 +169,9 @@ Private Sub WriteBranchBlocks()
     Set con = ActiveSheet.Shapes.AddConnector _
             (msoConnectorElbow, 0, 0, 0, 0)
     DefaultStyle.SetArrowConnectorStyle con
-    With con
-        .ConnectorFormat.BeginConnect LastConnector.ConnectorFormat.BeginConnectedShape, _
-            LastConnector.ConnectorFormat.BeginConnectionSite
-    End With
+    con.ConnectorFormat.BeginConnect _
+        LastConnector.ConnectorFormat.BeginConnectedShape, _
+        LastConnector.ConnectorFormat.BeginConnectionSite
     Set ArrowConnector = con
     
     LastConnector.Delete

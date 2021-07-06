@@ -18,7 +18,8 @@ Sub Run()
     a.PrevBlock.Area.Bottom = 50
     Blocks.Add a
     
-    Set b = New ProcessBlock
+    Set b = New SimpleBlock
+    b.Symbol = symbolTypeProcess
     b.InnerText = "BBB"
     Set b.PrevBlock = a
     Blocks.Add b
@@ -26,6 +27,7 @@ Sub Run()
     Dim main As New BlockList
     Dim branch As New BlockList
     Dim br As New BlockList
+    Dim loopin As New BlockList
 
     Set f = New DecisionBlock
     f.InnerText = "FFF"
@@ -33,36 +35,48 @@ Sub Run()
     f.BranchLabel = "No"
     Set f.PrevBlock = b
     
-    Set g = New ProcessBlock
+    Set g = New SimpleBlock
+    g.Symbol = symbolTypePredefined
     g.InnerText = "GGG"
     branch.Add g
+    
+    Set d = New SimpleBlock
+    d.Symbol = symbolTypeProcess
+    d.InnerText = "DDD"
+    Set d.PrevBlock = g
+    branch.Add d
+    
+    Set l = New LoopBlock
+    l.InnerText = "LLL"
+    l.Condition = "A = B"
+    'l.IsPreTest = False
+    Set l.PrevBlock = f
     
     Set h = New DecisionBlock
     h.InnerText = "HHH"
     h.MainLabel = "Yes"
     h.BranchLabel = "No"
-    Set h.PrevBlock = g
+    Set h.PrevBlock = l
     
-    Set i = New ProcessBlock
+    Set i = New SimpleBlock
+    i.Symbol = symbolTypeDocument
     i.InnerText = "III"
     br.Add i
     
     Set h.BranchBlocks = br
-    branch.Add h
-    
-    Set d = New ProcessBlock
-    d.InnerText = "DDD"
-    Set d.PrevBlock = f
-    main.Add d
+    loopin.Add h
 
-    Set e = New ProcessBlock
+    Set e = New SimpleBlock
+    e.Symbol = symbolTypeDisplay
     e.InnerText = "EEE"
-    Set e.PrevBlock = d
-    main.Add e
+    Set e.PrevBlock = h
+    loopin.Add e
     
+    Set l.InnerBlocks = loopin
+    main.Add l
     
     Set f.MainBlocks = main
-    Set f.BranchBlocks = branch
+    'Set f.BranchBlocks = branch
     
     Blocks.Add f
 
@@ -77,3 +91,4 @@ Sub Run()
         ed.WriteBlock
     Next
 End Sub
+

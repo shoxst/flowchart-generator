@@ -18,3 +18,4 @@ Public PrevBlock As BlockBase
 ' Abstract Method
 Public Sub WriteBlock()
 End Sub
+

@@ -31,13 +31,13 @@ Private Sub BlockBase_WriteBlock()
 
     ' Create terminal symbol
     Set shp = ActiveSheet.Shapes.AddShape _
-        (msoShapeFlowchartTerminator, Super.Area.Left, Super.Area.Top, Super.Area.SymbolWidth, Super.Area.SymbolHeight)
+        (symbolTypeTerminal, Super.Area.Left, Super.Area.Top, Super.Area.SymbolWidth, Super.Area.SymbolHeight)
     DefaultStyle.SetSymbolStyle shp
     shp.TextFrame.Characters.text = Super.InnerText
 
     ' Connect with previous block
     If Not IsStart Then
-        Super.PrevBlock.Connector.ConnectorFormat.EndConnect shp, ConnectionSite.Top
+        Super.PrevBlock.Connector.ConnectorFormat.EndConnect shp, 1
     End If
 
     ' Create next connector
@@ -45,7 +45,7 @@ Private Sub BlockBase_WriteBlock()
         Set con = ActiveSheet.Shapes.AddConnector _
             (msoConnectorStraight, 0, 0, 0, 0)
         DefaultStyle.SetLineConnectorStyle con
-        con.ConnectorFormat.BeginConnect shp, ConnectionSite.Bottom
+        con.ConnectorFormat.BeginConnect shp, 3
         Set Super.Connector = con
     End If
 

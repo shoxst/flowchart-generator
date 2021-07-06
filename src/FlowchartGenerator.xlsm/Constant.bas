@@ -10,9 +10,13 @@ Public Const TEXTBOX_DEFAULT_HEIGHT As Single = 20
 Public Const BLOCK_HORIZONTAL_MARGIN As Single = 30
 Public Const BLOCK_VERTICAL_MARGIN As Single = 15
 
-Public Enum ConnectionSite
-    Top = 1
-    Left = 2
-    Bottom = 3
-    Right = 4
+Public Enum SymbolType
+    symbolTypeTerminal = msoShapeFlowchartTerminator
+    symbolTypeProcess = msoShapeFlowchartProcess
+    symbolTypePredefined = msoShapeFlowchartPredefinedProcess
+    symbolTypeDecision = msoShapeFlowchartDecision
+    symbolTypeLoop = msoShapeSnip2SameRectangle
+    symbolTypeDocument = msoShapeFlowchartDocument
+    symbolTypeDisplay = msoShapeFlowchartDisplay
 End Enum
+

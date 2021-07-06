@@ -2,15 +2,17 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "ProcessBlock"
+Attribute VB_Name = "SimpleBlock"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-' class ProcessBlock
+' class SimpleBlock
 Implements BlockBase
+
+Public Symbol As SymbolType
 
 Private Super As New BlockBase
 
@@ -23,18 +25,18 @@ Private Sub BlockBase_WriteBlock()
 
     ' Create process symbol
     Set shp = ActiveSheet.Shapes.AddShape _
-        (msoShapeFlowchartProcess, Super.Area.Left, Super.Area.Top, Super.Area.SymbolWidth, Super.Area.SymbolHeight)
+        (Symbol, Super.Area.Left, Super.Area.Top, Super.Area.SymbolWidth, Super.Area.SymbolHeight)
     DefaultStyle.SetSymbolStyle shp
     shp.TextFrame.Characters.text = Super.InnerText
 
     ' Connect with previous block
-    Super.PrevBlock.Connector.ConnectorFormat.EndConnect shp, ConnectionSite.Top
+    Super.PrevBlock.Connector.ConnectorFormat.EndConnect shp, 1
 
     ' Create next connector
     Set con = ActiveSheet.Shapes.AddConnector _
         (msoConnectorStraight, 0, 0, 0, 0)
     DefaultStyle.SetLineConnectorStyle con
-    con.ConnectorFormat.BeginConnect shp, ConnectionSite.Bottom
+    con.ConnectorFormat.BeginConnect shp, 3
     Set Super.Connector = con
 
     ' Set block end point
