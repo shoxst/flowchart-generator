@@ -8,6 +8,8 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Sub Run()
+    SetSymbolConfigList
+    
     Dim Blocks As New BlockList
     
     Set a = New TerminalBlock
@@ -19,7 +21,7 @@ Sub Run()
     Blocks.Add a
     
     Set b = New SimpleBlock
-    b.Symbol = symbolTypeProcess
+    Set b.Symbol = SymbolConfigProcess
     b.InnerText = "BBB"
     Set b.PrevBlock = a
     Blocks.Add b
@@ -29,19 +31,20 @@ Sub Run()
     Dim br As New BlockList
     Dim loopin As New BlockList
 
-    Set f = New DecisionBlock
+    Set f = New ForkedBlock
+    Set f.Symbol = SymbolConfigDecision
     f.InnerText = "FFF"
     f.MainLabel = "Yes"
     f.BranchLabel = "No"
     Set f.PrevBlock = b
     
     Set g = New SimpleBlock
-    g.Symbol = symbolTypePredefined
+    Set g.Symbol = SymbolConfigPredifined
     g.InnerText = "GGG"
     branch.Add g
     
     Set d = New SimpleBlock
-    d.Symbol = symbolTypeProcess
+    Set d.Symbol = SymbolConfigProcess
     d.InnerText = "DDD"
     Set d.PrevBlock = g
     branch.Add d
@@ -52,14 +55,15 @@ Sub Run()
     'l.IsPreTest = False
     Set l.PrevBlock = f
     
-    Set h = New DecisionBlock
+    Set h = New ForkedBlock
+    Set h.Symbol = SymbolConfigData
     h.InnerText = "HHH"
-    h.MainLabel = "Yes"
-    h.BranchLabel = "No"
+    h.MainLabel = ""
+    h.BranchLabel = "EOF"
     Set h.PrevBlock = l
     
     Set i = New SimpleBlock
-    i.Symbol = symbolTypeDocument
+    Set i.Symbol = SymbolConfigDocument
     i.InnerText = "III"
     br.Add i
     
@@ -67,7 +71,7 @@ Sub Run()
     loopin.Add h
 
     Set e = New SimpleBlock
-    e.Symbol = symbolTypeDisplay
+    Set e.Symbol = SymbolConfigDisplay
     e.InnerText = "EEE"
     Set e.PrevBlock = h
     loopin.Add e
@@ -76,7 +80,7 @@ Sub Run()
     main.Add l
     
     Set f.MainBlocks = main
-    'Set f.BranchBlocks = branch
+    Set f.BranchBlocks = branch
     
     Blocks.Add f
 

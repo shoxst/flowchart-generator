@@ -2,14 +2,14 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "DecisionBlock"
+Attribute VB_Name = "ForkedBlock"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-' class DecisionBlock
+' class ForkedBlock
 Implements BlockBase
 
 Public MainBlocks As New BlockList
@@ -18,7 +18,7 @@ Public MainLabel As String
 Public BranchLabel As String
 
 Private Super As New BlockBase
-Private DecisionSymbol As Shape
+Private SymbolShape As Shape
 Private EndDummy As Shape
 Private ArrowConnector As Shape
 
@@ -33,20 +33,18 @@ Private Sub BlockBase_WriteBlock()
     Super.Area.SetStartPoint PrevBlock.Area
 
     ' Create decision shape
-    Set shp = ActiveSheet.Shapes.AddShape _
-        (symbolTypeDecision, Super.Area.Left, Super.Area.Top, Super.Area.SymbolWidth, Super.Area.SymbolHeight)
-    DefaultStyle.SetSymbolStyle shp
+    Set shp = BlockBase_CreateSymbolShape
     shp.TextFrame.Characters.text = Super.InnerText
-    Set DecisionSymbol = shp
+    Set SymbolShape = shp
 
     ' Connect with previous block
-    Super.PrevBlock.Connector.ConnectorFormat.EndConnect shp, 1
+    BlockBase_ConnectWithPrevBlock shp
 
     ' Create next connector
     Set con = ActiveSheet.Shapes.AddConnector _
         (msoConnectorStraight, 0, 0, 0, 0)
     DefaultStyle.SetLineConnectorStyle con
-    con.ConnectorFormat.BeginConnect shp, 3
+    con.ConnectorFormat.BeginConnect shp, Super.Symbol.Bottom
     Set Super.Connector = con
 
     ' Set block end point
@@ -141,7 +139,7 @@ Private Sub WriteElbowConnector()
     Set con = ActiveSheet.Shapes.AddConnector _
             (msoConnectorElbow, 0, 0, 0, 0)
     DefaultStyle.SetArrowConnectorStyle con
-    con.ConnectorFormat.BeginConnect DecisionSymbol, 4
+    con.ConnectorFormat.BeginConnect SymbolShape, Super.Symbol.Right
     Set ArrowConnector = con
 End Sub
 
@@ -151,7 +149,7 @@ Private Sub WriteBranchBlocks()
     Set con = ActiveSheet.Shapes.AddConnector _
             (msoConnectorElbow, 0, 0, 0, 0)
     DefaultStyle.SetLineConnectorStyle con
-    con.ConnectorFormat.BeginConnect DecisionSymbol, 4
+    con.ConnectorFormat.BeginConnect SymbolShape, Super.Symbol.Right
     Set StartDummy.Connector = con
     
     StartDummy.Area.Left = Super.Area.Right + Constant.BLOCK_HORIZONTAL_MARGIN
@@ -177,12 +175,28 @@ Private Sub WriteBranchBlocks()
     LastConnector.Delete
 End Sub
 
+Private Function BlockBase_CreateSymbolShape() As Shape
+    Set BlockBase_CreateSymbolShape = Super.CreateSymbolShape
+End Function
+
+Private Sub BlockBase_ConnectWithPrevBlock(ByRef shp As Shape)
+    Super.ConnectWithPrevBlock shp
+End Sub
+
 ' Interface
 Public Sub WriteBlock()
     BlockBase_WriteBlock
 End Sub
 
 ' Public Getter/Setter/Letter
+Public Property Get Symbol() As SymbolConfig
+    Set Symbol = BlockBase_Symbol
+End Property
+
+Public Property Set Symbol(ByVal Symbol As SymbolConfig)
+    Set BlockBase_Symbol = Symbol
+End Property
+
 Public Property Get Area() As BlockArea
     Set Area = BlockBase_Area
 End Property
@@ -216,6 +230,14 @@ Public Property Set PrevBlock(ByVal PrevBlock As BlockBase)
 End Property
 
 ' Override Getter/Setter/Letter
+Private Property Get BlockBase_Symbol() As SymbolConfig
+    Set BlockBase_Symbol = Super.Symbol
+End Property
+
+Private Property Set BlockBase_Symbol(ByVal Symbol As SymbolConfig)
+    Set Super.Symbol = Symbol
+End Property
+
 Private Property Get BlockBase_Area() As BlockArea
     Set BlockBase_Area = Super.Area
 End Property
