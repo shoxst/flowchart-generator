@@ -12,3 +12,10 @@ Public Function MaxRightInBlocks(ByVal Blocks As BlockList) As Single
     Next
     MaxRightInBlocks = MaxRight
 End Function
+
+Public Sub WriteAllBlocks(ByVal Blocks As BlockList)
+    Dim e As BlockBase
+    For Each e In Blocks.Items
+        e.WriteBlock
+    Next
+End Sub

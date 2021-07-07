@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public ShapeType As MsoAutoShapeType
+Public InnerText As String
 Public Top As Integer
 Public Left As Integer
 Public Bottom As Integer
@@ -25,4 +26,17 @@ Private Sub Class_Initialize()
     Width = Constant.SYMBOL_DEFAULT_WIDTH
     Height = Constant.SYMBOL_DEFAULT_HEIGHT
 End Sub
+
+Public Function Clone() As SymbolConfig
+    Dim sym As New SymbolConfig
+    sym.ShapeType = ShapeType
+    sym.InnerText = InnerText
+    sym.Top = Top
+    sym.Left = Left
+    sym.Bottom = Bottom
+    sym.Right = Right
+    sym.Width = Width
+    sym.Height = Height
+    Set Clone = sym
+End Function
 

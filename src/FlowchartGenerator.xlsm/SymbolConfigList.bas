@@ -11,7 +11,6 @@ Public SymbolConfigManualInput As New SymbolConfig
 Public SymbolConfigData As New SymbolConfig
 Public SymbolConfigLoop As New SymbolConfig
 
-
 Public Sub SetSymbolConfigList()
     ' Terminal
     SymbolConfigTerminal.ShapeType = msoShapeFlowchartTerminator

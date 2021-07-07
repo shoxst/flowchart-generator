@@ -31,10 +31,12 @@ Public Property Get Last() As BlockBase
     Set Last = Blocks(Blocks.Count)
 End Property
 
-Public Sub Add(ByVal Block As BlockBase)
-    Blocks.Add Block
+Public Sub Add(ByVal block As BlockBase)
+    Blocks.Add block
 End Sub
 
 Public Sub Remove(ByVal Index As Long)
     Blocks.Remove Index
 End Sub
+
+

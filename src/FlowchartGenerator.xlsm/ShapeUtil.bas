@@ -1,5 +1,29 @@
-Attribute VB_Name = "DefaultStyle"
+Attribute VB_Name = "ShapeUtil"
 Option Explicit
+
+Public Function CreateStraightLineConnector() As Shape
+    Dim con As Shape
+    Set con = ActiveSheet.Shapes.AddConnector _
+        (msoConnectorStraight, 0, 0, 0, 0)
+    SetLineConnectorStyle con
+    Set CreateStraightLineConnector = con
+End Function
+
+Public Function CreateElbowLineConnector() As Shape
+    Dim con As Shape
+    Set con = ActiveSheet.Shapes.AddConnector _
+            (msoConnectorElbow, 0, 0, 0, 0)
+    SetLineConnectorStyle con
+    Set CreateElbowLineConnector = con
+End Function
+
+Public Function CreateElbowArrowConnector() As Shape
+    Dim con As Shape
+    Set con = ActiveSheet.Shapes.AddConnector _
+            (msoConnectorElbow, 0, 0, 0, 0)
+    ShapeUtil.SetArrowConnectorStyle con
+    Set CreateElbowArrowConnector = con
+End Function
 
 Public Sub SetSymbolStyle(ByRef Symbol As Shape)
     With Symbol
