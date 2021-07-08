@@ -113,7 +113,7 @@ Public Function CreateLoopBlock(ByVal PrevBlock As BlockBase, ByVal cols As Coll
     Set CreateLoopBlock = CreateBase(block)
 End Function
 
-Public Function CreateBase(ByVal SubClass As IInheritable) As BlockBase
+Private Function CreateBase(ByVal SubClass As IInheritable) As BlockBase
     Set CreateBase = SubClass.Super
     Set CreateBase.This = SubClass
 End Function
