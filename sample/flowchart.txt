@@ -3,7 +3,7 @@ call "predefined process"
 call aaa
 process1
 "0Å®EOF"
-if "xÅÇ1" [Yes,No]
+if "x ÅÇ 1" [Yes,No]
   if "y < 0" [Yes,No]
     display "display a"
   else
