@@ -21,7 +21,7 @@ Public Function CreateElbowArrowConnector() As Shape
     Dim con As Shape
     Set con = ActiveSheet.Shapes.AddConnector _
             (msoConnectorElbow, 0, 0, 0, 0)
-    ShapeUtil.SetArrowConnectorStyle con
+    SetArrowConnectorStyle con
     Set CreateElbowArrowConnector = con
 End Function
 
@@ -32,7 +32,7 @@ Public Sub SetSymbolStyle(ByRef Symbol As Shape)
             .HorizontalAlignment = xlHAlignCenter
             .VerticalAlignment = xlVAlignCenter
         End With
-        With .Line
+        With .line
             .ForeColor.RGB = RGB(0, 0, 0)
             .Weight = 0.75
         End With
@@ -41,14 +41,14 @@ Public Sub SetSymbolStyle(ByRef Symbol As Shape)
 End Sub
 
 Public Sub SetLineConnectorStyle(ByRef Connector As Shape)
-    With Connector.Line
+    With Connector.line
         .ForeColor.RGB = RGB(0, 0, 0)
         .Weight = 0.75
     End With
 End Sub
 
 Public Sub SetArrowConnectorStyle(ByRef Connector As Shape)
-    With Connector.Line
+    With Connector.line
         .EndArrowheadStyle = msoArrowheadOpen
         .ForeColor.RGB = RGB(0, 0, 0)
         .Weight = 0.75
@@ -62,7 +62,7 @@ Public Sub SetTextboxStyle(ByRef Textbox As Shape)
             .HorizontalAlignment = xlHAlignLeft
             .VerticalAlignment = xlVAlignCenter
         End With
-        .Line.Visible = msoFalse
+        .line.Visible = msoFalse
         .Fill.Visible = msoFalse
     End With
 End Sub

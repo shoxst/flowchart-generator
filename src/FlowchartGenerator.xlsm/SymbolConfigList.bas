@@ -46,6 +46,5 @@ Public Sub SetSymbolConfigList()
     SymbolConfigLoop.Left = 3
     SymbolConfigLoop.Bottom = 2
     SymbolConfigLoop.Right = 1
-    
 End Sub
 

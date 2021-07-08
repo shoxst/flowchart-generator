@@ -9,14 +9,16 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+' Class BlockList
+
 Private Blocks As New Collection
 
 Public Property Get Count() As Long
     Count = Blocks.Count
 End Property
 
-Public Property Get Item(ByVal Index As Long)
-    Set Item = Blocks(Index)
+Public Property Get Item(ByVal index As Long)
+    Set Item = Blocks(index)
 End Property
 
 Public Property Get Items() As Collection
@@ -35,8 +37,8 @@ Public Sub Add(ByVal block As BlockBase)
     Blocks.Add block
 End Sub
 
-Public Sub Remove(ByVal Index As Long)
-    Blocks.Remove Index
+Public Sub Remove(ByVal index As Long)
+    Blocks.Remove index
 End Sub
 
 

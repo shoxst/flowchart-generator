@@ -1,0 +1,22 @@
+# Main
+call "predefined process"
+call aaa
+process1
+"0Å®EOF"
+if "xÅÇ1" [Yes,No]
+  if "y < 0" [Yes,No]
+    display "display a"
+  else
+    write "write a"
+  end-if
+  "do something"
+else
+  do "Loop 1" until "cnt > 5"
+    print ddd
+    read "read file" [EOF]
+      "1Å®EOF"
+    end-read
+  loop
+end-if
+print "record"
+input "input a"

@@ -9,6 +9,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+' Class SymbolConfig
+
 Public ShapeType As MsoAutoShapeType
 Public InnerText As String
 Public Top As Integer

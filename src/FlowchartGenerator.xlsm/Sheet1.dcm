@@ -7,79 +7,27 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
-Sub Run()
+Option Explicit
+
+Public Sub Generate()
+    Dim FilePath As String, Blocks As BlockList
+    Dim Analyzer As New FileAnalyzer
+    
     SetSymbolConfigList
     
-    Dim Blocks As New BlockList
-    
-    Dim StartDummy As New TerminalBlock, dummyBase As BlockBase
-    StartDummy.Super.Area.Left = 100
-    StartDummy.Super.Area.Bottom = 50
-    Set dummyBase = CreateBase(StartDummy)
-    
-    Dim aTerminal As New TerminalBlock, aBase As BlockBase
-    aTerminal.Super.Initialize "AAA", dummyBase
-    aTerminal.IsStart = True
-    Set aBase = CreateBase(aTerminal)
-    Blocks.Add aBase
-    
-    Dim cProcess As New SimpleBlock, cBase As BlockBase
-    Set cProcess.Super.Symbol = SymbolConfigProcess.Clone
-    cProcess.Super.Initialize "CCC", aBase
-    Set cBase = CreateBase(cProcess)
-    Blocks.Add cBase
-    
-    Dim dDecision As New ForkedBlock, dBase As BlockBase
-    Set dDecision.Super.Symbol = SymbolConfigDecision.Clone
-    dDecision.Super.Initialize "DDD", cBase
-    dDecision.MainLabel = "Yes"
-    dDecision.BranchLabel = "No"
-    Set dBase = CreateBase(dDecision)
-    Blocks.Add dBase
-    
-    Dim eData As New ForkedBlock, eBase As BlockBase
-    Set eData.Super.Symbol = SymbolConfigData.Clone
-    eData.Super.Initialize "EEE", dBase
-    eData.BranchLabel = "EOF"
-    Set eBase = CreateBase(eData)
-    dDecision.MainBlocks.Add eBase
-    
-    Dim fLoop As New LoopBlock, fBase As BlockBase
-    fLoop.Super.Initialize "FFF", Nothing
-    fLoop.Condition = "AAA = BBB"
-    Set fBase = CreateBase(fLoop)
-    eData.BranchBlocks.Add fBase
-    
-    Dim gProcess As New SimpleBlock, gBase As BlockBase
-    Set gProcess.Super.Symbol = SymbolConfigProcess.Clone
-    gProcess.Super.Initialize "GGG", fBase
-    Set gBase = CreateBase(gProcess)
-    fLoop.InnerBlocks.Add gBase
-    
-    Dim iDocument As New SimpleBlock, iBase As BlockBase
-    Set iDocument.Super.Symbol = SymbolConfigDocument.Clone
-    iDocument.Super.Initialize "III", eBase
-    Set iBase = CreateBase(iDocument)
-    dDecision.MainBlocks.Add iBase
-    
-    Dim hDisplay As New SimpleBlock, hBase As BlockBase
-    Set hDisplay.Super.Symbol = SymbolConfigDisplay.Clone
-    hDisplay.Super.Initialize "HHH", Nothing
-    Set hBase = CreateBase(hDisplay)
-    dDecision.BranchBlocks.Add hBase
-    
-    Dim bTerminal As New TerminalBlock, bBase As BlockBase
-    bTerminal.Super.Initialize "BBB", dBase
-    bTerminal.IsEnd = True
-    Set bBase = CreateBase(bTerminal)
-    Blocks.Add bBase
+    FilePath = ThisWorkbook.Path & "\flowchart.txt"
+    Analyzer.Read FilePath
+    Set Blocks = Analyzer.Analyze
     
     BlockUtil.WriteAllBlocks Blocks
-    
 End Sub
 
-Private Function CreateBase(ByVal SubClass As IInheritable) As BlockBase
-    Set CreateBase = SubClass.Super
-    Set CreateBase.This = SubClass
-End Function
+Public Sub DeleteShapes()
+    Dim shp As Shape
+    For Each shp In ActiveSheet.Shapes
+       If shp.Type <> msoFormControl Then
+           shp.Delete
+       End If
+    Next shp
+End Sub
 

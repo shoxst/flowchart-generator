@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Class BlockArea
+
 Public Left As Single
 Public Right As Single
 Public Top As Single

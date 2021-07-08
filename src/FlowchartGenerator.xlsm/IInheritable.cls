@@ -9,5 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+' Interface IInheritable
+
 Public Property Get Super() As Object
 End Property

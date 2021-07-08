@@ -9,6 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-' Abstract Method
+' Interface IBlockBase
+
 Public Sub WriteBlock()
 End Sub

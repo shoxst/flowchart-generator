@@ -9,7 +9,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-' class ForkedBlock
+' Class ForkedBlock
+
 Implements IBlockBase
 Implements IInheritable
 
