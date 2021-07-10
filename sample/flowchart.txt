@@ -2,7 +2,6 @@
 call "predefined process"
 call aaa
 process1
-"0Å®EOF"
 if "x ÅÇ 1" [Yes,No]
   if "y < 0" [Yes,No]
     display "display a"
@@ -14,7 +13,7 @@ else
   do "Loop 1" until "cnt > 5"
     print ddd
     read "read file" [EOF]
-      "1Å®EOF"
+      "EOF = 1"
     end-read
   loop
 end-if

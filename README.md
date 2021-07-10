@@ -1,14 +1,16 @@
 # flowchart-generator
 
 ## 概要
-フローを記述したテキストファイルを入力として、エクセルの図形でフローチャートを作成します。
+フローを記述したテキストファイルを入力として、エクセルの図形でフローチャートを作成する。
+
+<img src="./img.png">
 
 ## 使い方
 ### テキストファイルの準備
-以下のルールで記述します。`sample/flowchart.txt`を参考にしてください。
+以下のルールで記述。`sample/flowchart.txt`を参考のこと。
 
 #### String
-文字列は空白を含む場合、`" "`でくくります。含まない場合はどちらでもかまいません。`"`のエスケープにはまだ対応していません。
+文字列は空白を含む場合、`" "`でくくる。`"`のエスケープには未対応。
 ```
 aaa
 "aaa"
@@ -74,8 +76,8 @@ aaa
   ```
 
 ### フローチャートの作成
-- `FlowChartGenerator.xlsm`と同じフォルダに、用意したファイルを`flowchart.txt`というファイル名でおきます。
-- エクセルファイルを開き、`Generate`ボタンをクリックします。
+- `FlowChartGenerator.xlsm`と同じフォルダに、用意したファイルを`flowchart.txt`というファイル名でおく。
+- Excelファイルを開き、`Generate`ボタンをクリックする。
 
 ## 備考
-xlsmからのソースコード抽出には、[vbac](https://github.com/vbaidiot/ariawase)を使用しています。
+xlsmからのソースコード抽出には、[vbac](https://github.com/vbaidiot/ariawase)を使用。

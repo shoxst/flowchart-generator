@@ -23,7 +23,7 @@ Private LoopName As String
 
 Private Sub Class_Initialize()
     IsPreTest = True
-    Set Super.Symbol = SymbolConfigLoop
+    Set Super.Symbol = SymbolConfigLoop.Clone
 End Sub
 
 ' Override Method
